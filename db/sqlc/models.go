@@ -5,18 +5,18 @@
 package db
 
 import (
-	"database/sql"
+	"time"
 )
 
 type Car struct {
-	ID        int64        `json:"id"`
-	ModelName string       `json:"model_name"`
-	Equipment string       `json:"equipment"`
-	Color     string       `json:"color"`
-	Country   string       `json:"country"`
-	Price     int64        `json:"price"`
-	Valid     string       `json:"valid"`
-	CreatedAt sql.NullTime `json:"created_at"`
+	ID        int64     `json:"id"`
+	ModelName string    `json:"model_name"`
+	Equipment string    `json:"equipment"`
+	Color     string    `json:"color"`
+	Country   string    `json:"country"`
+	Price     int64     `json:"price"`
+	Valid     string    `json:"valid"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type Client struct {
@@ -38,14 +38,15 @@ type Manager struct {
 }
 
 type Order struct {
-	ID            int64 `json:"id"`
-	Car           int64 `json:"car"`
-	Client        int64 `json:"client"`
-	Manager       int64 `json:"manager"`
-	Magazine      int64 `json:"magazine"`
-	DeliveryTime  int32 `json:"delivery_time"`
-	CarPrice      int64 `json:"car_price"`
-	DeliveryPrice int64 `json:"delivery_price"`
-	Tax           int64 `json:"tax"`
-	TotalPrice    int64 `json:"total_price"`
+	ID            int64     `json:"id"`
+	Car           int64     `json:"car"`
+	Client        int64     `json:"client"`
+	Manager       int64     `json:"manager"`
+	Magazine      int64     `json:"magazine"`
+	DeliveryTime  int32     `json:"delivery_time"`
+	CarPrice      int64     `json:"car_price"`
+	DeliveryPrice int64     `json:"delivery_price"`
+	Tax           int64     `json:"tax"`
+	TotalPrice    int64     `json:"total_price"`
+	CreatedAt     time.Time `json:"created_at"`
 }

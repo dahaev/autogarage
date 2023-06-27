@@ -6,7 +6,7 @@ CREATE TABLE "cars" (
                         "country" varchar NOT NULL,
                         "price" bigint NOT NULL,
                         "valid" varchar NOT NULL,
-                        "created_at" timestamptz DEFAULT (now())
+                        "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "orders" (
@@ -19,7 +19,8 @@ CREATE TABLE "orders" (
                           "car_price" bigint NOT NULL,
                           "delivery_price" bigint NOT NULL DEFAULT 0,
                           "tax" bigint NOT NULL DEFAULT 0,
-                          "total_price" bigint NOT NULL
+                          "total_price" bigint NOT NULL,
+                          "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "clients" (

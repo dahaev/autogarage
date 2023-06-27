@@ -84,3 +84,37 @@ func randomIntStringForNumberTriple() string {
 func RandomAddress() string {
 	return randomString(10)
 }
+
+func RandomCar() string {
+	model_name := []string{
+		"BMW",
+		"Mercedes-Benz",
+		"LADA",
+		"Hyundai",
+		"Toyota",
+		"Changan",
+		"Audi",
+		"Kia",
+	}
+	n := len(model_name)
+	return model_name[rand.Intn(n)]
+}
+
+func RandomEquipment() string {
+	eq := []string{
+		"base",
+		"Allroad",
+		"luxury",
+	}
+	return eq[rand.Intn(len(eq))]
+}
+
+func RandomPrice() int64 {
+	n := rand.Intn(100000-10000) + 10000
+	return int64(n)
+}
+
+func RandomColor() string {
+	color := []string{"black", "red", "sky", "brown", "grey", "white"}
+	return color[rand.Intn(len(color))]
+}
