@@ -33,7 +33,7 @@ func (s *Server) CreateClient(ctx *gin.Context) {
 }
 
 type getClient struct {
-	ID int64 `json:"id" binding:"required,min=1"`
+	ID int64 `uri:"id" binding:"required,min=1"`
 }
 
 func (s *Server) GetClient(ctx *gin.Context) {
@@ -53,4 +53,20 @@ func (s *Server) GetClient(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, client)
+}
+
+func (s *Server) GetListClients(ctx *gin.Context) {
+	arg := db.ListClientsParams{
+		Limit: 10,
+	}
+	clients, err := s.store.ListClients(ctx, arg)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorResponse(err))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, clients)
 }

@@ -23,6 +23,6 @@ func main() {
 	server := api.NewServer(store)
 
 	if err := server.Run(serverAddress); err != nil {
-		log.Printf("server cannot run at address: ", err)
+		log.Printf("server cannot run at address: %v", err)
 	}
 }
