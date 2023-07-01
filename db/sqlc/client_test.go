@@ -8,8 +8,9 @@ import (
 )
 
 func createRandomClient(t *testing.T) Client {
+	user := createRandomUser(t)
 	arg := CreateClientParams{
-		Name:        util.RandomClient(),
+		Name:        user.Username,
 		Country:     util.RandomCountry(),
 		PhoneNumber: util.RandomPhoneNumber(),
 	}

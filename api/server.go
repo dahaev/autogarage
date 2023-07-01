@@ -20,6 +20,7 @@ func NewServer(store db.Store) *Server {
 	router.GET("/client/list", server.GetListClients)
 	router.POST("/magazine", server.CreateMagazine)
 	router.GET("/magazine/list", server.ListMagazine)
+	router.POST("/users", server.CreateUser)
 	server.router = router
 	return server
 }

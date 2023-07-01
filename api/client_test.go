@@ -98,24 +98,6 @@ func requireMatchBodyClient(t *testing.T, body *bytes.Buffer, client db.Client) 
 	require.Equal(t, gotClient, client)
 }
 
-func requireMatchPostBodyClient(t *testing.T, body *bytes.Buffer, client db.Client) {
-	data, err := io.ReadAll(body)
-	require.NoError(t, err)
-
-	type bodyClient struct {
-		Name        string `json:"name"`
-		Country     string `json:"country"`
-		PhoneNumber string `json:"phone_number"`
-	}
-	var clientBody bodyClient
-
-	err = json.Unmarshal(data, clientBody)
-	require.NoError(t, err)
-	fmt.Println(client)
-	fmt.Println(clientBody)
-	require.Equal(t, clientBody, client)
-}
-
 func randomClient() db.Client {
 	return db.Client{
 		ID:          util.RandomInt(1, 1000),
@@ -155,8 +137,40 @@ func TestCreateClient(t *testing.T) {
 				requireMatchBodyClient(t, recorder.Body, client)
 			},
 		},
+		{
+			name: "BadRequest",
+			body: gin.H{
+				"name":         client.Name,
+				"country":      "",
+				"phone_number": client.PhoneNumber,
+			},
+			buildSubs: func(store *mockdb.MockStore) {
+				arg := db.CreateClientParams{
+					Name:        client.Name,
+					Country:     "",
+					PhoneNumber: client.PhoneNumber,
+				}
+				store.EXPECT().CreateClient(gomock.Any(), gomock.Eq(arg)).Times(0)
+			},
+			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusBadRequest, recorder.Code)
+			},
+		},
+		{
+			name: "InternalServerError",
+			body: gin.H{
+				"name":         client.Name,
+				"country":      client.PhoneNumber,
+				"phone_number": client.PhoneNumber,
+			},
+			buildSubs: func(store *mockdb.MockStore) {
+				store.EXPECT().CreateClient(gomock.Any(), gomock.Any()).Times(1).Return(db.Client{}, sql.ErrConnDone)
+			},
+			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusInternalServerError, recorder.Code)
+			},
+		},
 	}
-
 	for i := range testCases {
 		tc := testCases[i]
 		t.Run(tc.name, func(t *testing.T) {
