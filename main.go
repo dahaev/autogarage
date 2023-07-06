@@ -10,7 +10,7 @@ import (
 
 const (
 	dbDriver      = "postgres"
-	dbSource      = "postgresql://root:secret@localhost:5432/garage_bank?sslmode=disable"
+	dbSource      = "postgresql://root:secret@postgres:5432/garage_bank?sslmode=disable"
 	serverAddress = "0.0.0.0:8080"
 )
 
@@ -20,7 +20,10 @@ func main() {
 		log.Println("cannot connect to db")
 	}
 	store := db.NewStore(conn)
-	server := api.NewServer(store)
+	server, err := api.NewServer(store)
+	if err != nil {
+		log.Fatal("cannot create server", err)
+	}
 
 	if err := server.Run(serverAddress); err != nil {
 		log.Printf("server cannot run at address: %v", err)

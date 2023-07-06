@@ -43,7 +43,7 @@ func EqCreateUserParams(arg db.CreateUserParams, password string) gomock.Matcher
 }
 
 func TestCreateUser(t *testing.T) {
-	user, password := createRandomUser(t)
+	user, password := CreateRandomUser(t)
 	testCases := []struct {
 		name          string
 		body          gin.H
@@ -85,7 +85,8 @@ func TestCreateUser(t *testing.T) {
 
 			store := mockdb.NewMockStore(ctrl)
 			tc.buildSubs(store)
-			server := NewServer(store)
+			server, err := NewServer(store)
+			require.NoError(t, err)
 			recorder := httptest.NewRecorder()
 			data, err := json.Marshal(tc.body)
 			require.NoError(t, err)
@@ -100,7 +101,7 @@ func TestCreateUser(t *testing.T) {
 
 }
 
-func createRandomUser(t *testing.T) (user db.User, password string) {
+func CreateRandomUser(t *testing.T) (user db.User, password string) {
 	password = util.RandomUserString(10)
 	hashedPassword, err := util.HashPassword(password)
 	require.NoError(t, err)

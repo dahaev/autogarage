@@ -2,7 +2,9 @@ package api
 
 import (
 	db "autoGarage/db/sqlc"
+	"autoGarage/token"
 	"database/sql"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 	"net/http"
@@ -25,6 +27,8 @@ func (s *Server) CreateClient(ctx *gin.Context) {
 		Country:     request.Country,
 		PhoneNumber: request.PhoneNumber,
 	}
+	a, _ := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	fmt.Println(a)
 	client, err := s.store.CreateClient(ctx, arg)
 	if err != nil {
 		if pqErr, ok := err.(*pq.Error); ok {

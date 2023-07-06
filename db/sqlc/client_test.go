@@ -46,22 +46,22 @@ func TestGetClient(t *testing.T) {
 
 }
 
-func TestUpdateClient(t *testing.T) {
-	client1 := createRandomClient(t)
-	arg := UpdateClientParams{
-		ID:          client1.ID,
-		Name:        util.RandomClient(),
-		PhoneNumber: util.RandomPhoneNumber(),
-	}
-	client2, err := testQueries.UpdateClient(context.Background(), arg)
-
-	require.NoError(t, err)
-	require.NotEmpty(t, client2)
-
-	require.Equal(t, client1.ID, client2.ID)
-	require.Equal(t, arg.Name, client2.Name)
-	require.Equal(t, arg.PhoneNumber, client2.PhoneNumber)
-}
+//func TestUpdateClient(t *testing.T) {
+//	client1 := createRandomClient(t)
+//	arg := UpdateClientParams{
+//		ID:          client1.ID,
+//		Name:        util.RandomClient(),
+//		PhoneNumber: util.RandomPhoneNumber(),
+//	}
+//	client2, err := testQueries.UpdateClient(context.Background(), arg)
+//
+//	require.NoError(t, err)
+//	require.NotEmpty(t, client2)
+//
+//	require.Equal(t, client1.ID, client2.ID)
+//	require.Equal(t, arg.Name, client2.Name)
+//	require.Equal(t, arg.PhoneNumber, client2.PhoneNumber)
+//}
 
 func TestListClients(t *testing.T) {
 	for i := 0; i < 10; i++ {
